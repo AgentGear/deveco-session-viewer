@@ -1,0 +1,27 @@
+{
+  "name": "deveco-session-viewer",
+  "version": "0.1.0",
+  "description": "Browse and view deveco conversation sessions via a local web UI",
+  "type": "module",
+  "license": "MIT",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./server": "./src/index.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "deveco",
+    "opencode",
+    "plugin",
+    "session",
+    "history",
+    "web-ui"
+  ]
+}
