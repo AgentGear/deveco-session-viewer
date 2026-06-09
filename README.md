@@ -1,6 +1,6 @@
 # DevEco Code Session Viewer
 
-A plugin for [deveco](https://github.com/sst/opencode) that provides a local web UI to browse, search, and manage conversation sessions.
+A plugin for deveco/opencode that provides a local web UI to browse, search, and manage conversation sessions.
 
 ## Features
 
