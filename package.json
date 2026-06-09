@@ -1,7 +1,7 @@
 {
   "name": "deveco-session-viewer",
   "version": "0.1.0",
-  "description": "Browse and view deveco conversation sessions via a local web UI",
+  "description": "A plugin for deveco/opencode that provides a local web UI to browse, search, and manage conversation sessions",
   "type": "module",
   "license": "MIT",
   "main": "./src/index.ts",
@@ -9,6 +9,20 @@
     ".": "./src/index.ts",
     "./server": "./src/index.ts"
   },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lookback416/deveco-session-viewer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lookback416/deveco-session-viewer/issues"
+  },
+  "homepage": "https://github.com/lookback416/deveco-session-viewer#readme",
+  "author": "liujianghang",
   "devDependencies": {
     "@types/node": "^22.0.0",
     "typescript": "^5.7.0"
@@ -22,6 +36,8 @@
     "plugin",
     "session",
     "history",
-    "web-ui"
+    "web-ui",
+    "viewer",
+    "statistics"
   ]
 }
