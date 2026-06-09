@@ -1,23 +1,48 @@
-# DevEco Session Viewer
+# DevEco Code Session Viewer
 
-A plugin for [deveco](https://github.com/sst/opencode) that provides a local web UI to browse and viewing historical conversation sessions.
+A plugin for [deveco](https://github.com/sst/opencode) that provides a local web UI to browse, search, and manage conversation sessions.
 
 ## Features
 
-- **Session List View** - Browse all conversation sessions with search functionality
+### Session Management
+- **Session List View** - Browse all conversation sessions with search, sort, and filter
 - **Session Detail View** - View complete conversation history with markdown rendering
+- **Rename Sessions** - Edit session titles directly from the list (syncs with deveco TUI)
+- **Delete Sessions** - Permanently remove sessions with confirmation dialog
+- **Favorites** - Star sessions to pin them to the top of the list (stored in browser localStorage)
+- **Export** - Export conversations as Markdown or JSON, content respects Clean Mode setting
+- **Copy Messages** - Copy individual message content to clipboard
+
+### Search & Filter
+- **Keyword Search** - Filter sessions by keyword in the session list
+- **In-conversation Search** - Ctrl+F to search within a conversation with match highlighting and navigation
+- **Sort** - Sort sessions by Time, Cost, or Tokens (ascending/descending)
+- **Model Filter** - Multi-select checkbox filter to show sessions by specific models
+- **Favorites Filter** - Toggle to show only favorited sessions
+- **Time Grouping** - Sessions grouped by Today / Yesterday / This Week / This Month / Older when sorted by time
+
+### Statistics Dashboard
+- **Tab-based Navigation** - Switch between Sessions and Statistics views
+- **Time Range Selector** - Filter stats by Today, 7 Days, 30 Days, or All time
+- **Summary Cards** - Total Cost, Total Tokens, Session Count, Average Cost per Session
+- **Charts** (powered by Chart.js):
+  - Daily Cost Trend (line chart)
+  - Cost by Model (doughnut chart)
+  - Daily Sessions (bar chart)
+
+### UX
 - **Real-time Updates** - Automatic refresh via Server-Sent Events (SSE) when sessions or messages change
-- **Clean Mode** - Hide intermediate agent steps, show only user inputs and final assistant responses
-- **Sticky Header** - Session title and navigation controls stay visible while scrolling
-- **Tool Call Display** - View tool invocations and their outputs
-- **Reasoning Display** - View agent thinking process (collapsible in Clean Mode)
+- **Clean Mode** - Hide intermediate agent steps, show only user inputs and final assistant responses per turn
+- **Sticky Header** - Session title, search bar, and navigation controls stay visible while scrolling
+- **Server Info** - Status bar shows connected project directory and server IP:port
+- **Dark Theme** - GitHub-inspired dark UI
 
 ## Installation
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://gitcode.com/user/liujianghang/deveco-session-viewer.git
+git clone https://gitcode.com/liujianghang/deveco-session-viewer.git
 cd deveco-session-viewer
 ```
 
@@ -61,23 +86,36 @@ Visit `http://localhost:9876` in your browser.
 
 ### Session List
 
-- Browse all sessions sorted by most recent
+- Browse all sessions with time grouping (Today / Yesterday / This Week / This Month / Older)
 - Use the search box to filter sessions by keyword
+- Use the sort dropdown to sort by Time, Cost, or Tokens (click again to toggle direction)
+- Use the model filter dropdown to show only sessions using specific models (multi-select)
+- Click the star icon on any session card to favorite it (favorited sessions are pinned to top)
+- Click the pencil icon to rename a session
+- Click the trash icon to delete a session (with confirmation)
 - Click any session card to view details
 
 ### Session Detail
 
-- **Back** button (top right) - Return to session list
-- **Clean Mode** toggle (top right) - Hide intermediate agent steps, show only:
-  - All user inputs
-  - Final assistant response for each turn
-- Session title and metadata (creation time, model, token usage, cost) are displayed at the top
+- **Search** - Always-visible search bar to find text within the conversation (Enter/Shift+Enter to navigate matches)
+- **Export** - Export the conversation as Markdown or JSON (respects Clean Mode)
+- **Clean Mode** - Hide intermediate agent steps, show only user inputs and final assistant response per turn
+- **Copy** - Hover over any message to copy its text content
+- **Back** button - Return to session list
+- Session metadata: title, creation time, last updated time, model, token usage, cost
+
+### Statistics
+
+- Switch to the Statistics tab to view usage analytics
+- Select time range: Today, 7 Days, 30 Days, or All
+- View summary cards and interactive charts
 
 ### Real-time Updates
 
 The web UI automatically updates when:
 - New sessions are created
 - Session titles change
+- Sessions are deleted
 - New messages are added to the currently viewed session
 
 Updates are delivered via Server-Sent Events (SSE) with automatic reconnection on disconnect.
@@ -86,10 +124,11 @@ Updates are delivered via Server-Sent Events (SSE) with automatic reconnection o
 
 This plugin is **zero-dependency** at runtime:
 
-- Uses Node.js built-in `node:http` module
+- Uses Node.js built-in `node:http` and `node:os` modules
 - Embeds the complete web UI as a string (no static files)
 - Communicates with deveco via in-process client (no network overhead)
 - Type definitions are inlined (no external `@opencode-ai/plugin` dependency)
+- Chart.js loaded via CDN for statistics charts
 
 The plugin starts an HTTP server that:
 1. Serves the embedded web UI at `/`
@@ -98,14 +137,16 @@ The plugin starts an HTTP server that:
 
 ## API Endpoints
 
-| Endpoint | Description |
-|---|---|
-| `GET /` | Web UI |
-| `GET /api/info` | Project info (directory, projectId) |
-| `GET /api/sessions?search=...` | List sessions with optional search |
-| `GET /api/sessions/:id` | Get session details |
-| `GET /api/sessions/:id/messages?limit=200` | Get session messages |
-| `GET /api/events` | SSE stream for real-time updates |
+| Endpoint | Method | Description |
+|---|---|---|
+| `/` | GET | Web UI |
+| `/api/info` | GET | Project info (directory, projectId, serverIP, serverPort) |
+| `/api/sessions?search=...&limit=...` | GET | List sessions with optional search and limit |
+| `/api/sessions/:id` | GET | Get session details |
+| `/api/sessions/:id` | PATCH | Update session (title) |
+| `/api/sessions/:id` | DELETE | Delete a session |
+| `/api/sessions/:id/messages?limit=...` | GET | Get session messages |
+| `/api/events` | GET | SSE stream for real-time updates |
 
 ## License
 
