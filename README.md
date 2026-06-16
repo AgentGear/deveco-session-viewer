@@ -1,6 +1,6 @@
 # DevEco Code Session Viewer
 
-A plugin for deveco/opencode that provides a local web UI to browse, search, and manage conversation sessions.
+A plugin for deveco/opencode that provides a local web UI to browse, search, and manage conversation sessions with theme switching and keyboard navigation support.
 
 ## Features
 
@@ -35,14 +35,15 @@ A plugin for deveco/opencode that provides a local web UI to browse, search, and
 - **Clean Mode** - Hide intermediate agent steps, show only user inputs and final assistant responses per turn
 - **Sticky Header** - Session title, search bar, and navigation controls stay visible while scrolling
 - **Server Info** - Status bar shows connected project directory and server IP:port
-- **Dark Theme** - GitHub-inspired dark UI
+- **Theme Switching** - Toggle between dark and light themes (preference saved to localStorage)
+- **Keyboard Navigation** - Navigate sessions with arrow keys, Enter to open, Esc to go back
 
 ## Installation
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://gitcode.com/liujianghang/deveco-session-viewer.git
+git clone https://github.com/AgentGear/deveco-session-viewer.git
 cd deveco-session-viewer
 ```
 
@@ -120,6 +121,22 @@ The web UI automatically updates when:
 
 Updates are delivered via Server-Sent Events (SSE) with automatic reconnection on disconnect.
 
+### Keyboard Shortcuts
+
+**Session List:**
+- `↑` / `↓` - Navigate between sessions
+- `Enter` - Open selected session
+- `Esc` - Clear search (if search box is focused)
+
+**Session Detail:**
+- `Ctrl+F` / `Cmd+F` - Search within conversation
+- `Enter` - Next search match
+- `Shift+Enter` - Previous search match
+- `Esc` - Close search / Return to session list
+
+**General:**
+- Click theme toggle button (☀️/🌙) in header to switch between light and dark themes
+
 ## Architecture
 
 This plugin is **zero-dependency** at runtime:
@@ -129,6 +146,7 @@ This plugin is **zero-dependency** at runtime:
 - Communicates with deveco via in-process client (no network overhead)
 - Type definitions are inlined (no external `@opencode-ai/plugin` dependency)
 - Chart.js loaded via CDN for statistics charts
+- Theme preference and favorites stored in browser localStorage
 
 The plugin starts an HTTP server that:
 1. Serves the embedded web UI at `/`

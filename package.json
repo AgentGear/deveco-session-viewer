@@ -22,7 +22,7 @@
     "url": "https://github.com/AgentGear/deveco-session-viewer/issues"
   },
   "homepage": "https://github.com/AgentGear/deveco-session-viewer#readme",
-  "author": "liujianghang",
+  "author": "lookback",
   "devDependencies": {
     "@types/node": "^22.0.0",
     "typescript": "^5.7.0"
