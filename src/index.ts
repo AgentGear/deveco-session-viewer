@@ -216,6 +216,11 @@ mark.find-hl.current{background:var(--accent-blue);color:#fff}
 .modal-btn.danger{background:var(--accent-red);border:none;color:#fff}
 .modal-btn.danger:hover{background:var(--accent-red-dark)}
 .card-action-btn.danger:hover{background:var(--bg-danger);border-color:var(--accent-red);color:var(--accent-red)}
+.refresh-btn{background:var(--bg-tertiary);border:2px solid var(--border-primary);color:var(--text-secondary);width:40px;height:40px;border-radius:10px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.refresh-btn:hover{background:var(--bg-hover);border-color:var(--accent-blue);color:var(--accent-blue)}
+.refresh-btn:active{transform:scale(0.95)}
+.refresh-btn.spinning{animation:spin 0.8s linear infinite}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .search-sort-row{display:flex;gap:12px;margin-bottom:16px;align-items:center}
 .search-wrap{flex:1;position:relative}
 .search-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;font-size:18px}
@@ -291,6 +296,7 @@ mark.find-hl.current{background:var(--accent-blue);color:#fff}
           </button>
           <div class="model-dropdown" id="modelDropdown"></div>
         </div>
+        <button class="refresh-btn" onclick="refreshSessionList()" title="Refresh sessions">&#8635;</button>
       </div>
       <div class="filter-bar">
         <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">All</button>
@@ -323,6 +329,7 @@ mark.find-hl.current{background:var(--accent-blue);color:#fff}
       <div class="sticky-toolbar">
         <div class="detail-title" id="detailTitle"></div>
         <div style="flex:1"></div>
+        <button class="refresh-btn" onclick="refreshSessionDetail()" title="Refresh messages" style="width:36px;height:36px;font-size:16px">&#8635;</button>
         <div class="export-wrap">
           <button class="export-btn" onclick="toggleExportMenu(event)">Export ▾</button>
           <div class="export-menu" id="exportMenu">
@@ -548,6 +555,34 @@ async function loadSessions(){
   const sessions=await api("/sessions?"+params.toString());
   allSessions=sessions;
   renderSessions(allSessions);
+}
+
+async function refreshSessionList(){
+  const btn=event?.currentTarget;
+  if(btn)btn.classList.add("spinning");
+  try{
+    await loadSessions();
+  }catch(e){
+    console.error("Failed to refresh sessions:",e);
+  }finally{
+    if(btn)btn.classList.remove("spinning");
+  }
+}
+
+async function refreshSessionDetail(){
+  if(!currentSession)return;
+  const btn=event?.currentTarget;
+  if(btn)btn.classList.add("spinning");
+  try{
+    const msgs=await api("/sessions/"+currentSession.id+"/messages?limit=1000");
+    currentMessages=msgs;
+    allMessages=msgs;
+    renderDetail(currentSession,msgs);
+  }catch(e){
+    console.error("Failed to refresh messages:",e);
+  }finally{
+    if(btn)btn.classList.remove("spinning");
+  }
 }
 
 function renderSessions(list){
