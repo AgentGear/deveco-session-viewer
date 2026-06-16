@@ -1346,7 +1346,11 @@ const server: PluginModule["server"] = async (input, options) => {
     console.log(`[session-history] Web UI: http://localhost:${port}`)
   })
 
-  httpServer.on("error", (err) => {
+  httpServer.on("error", (err: NodeJS.ErrnoException) => {
+    if (err.code === "EADDRINUSE") {
+      // Port already in use, likely another deveco instance - silently skip
+      return
+    }
     console.error(`[session-history] Server error:`, err.message)
   })
 
