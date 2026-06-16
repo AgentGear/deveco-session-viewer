@@ -1,5 +1,7 @@
 # DevEco Code Session Viewer
 
+English | [中文](./README.zh-CN.md)
+
 A plugin for deveco/opencode that provides a local web UI to browse, search, and manage conversation sessions with theme switching and keyboard navigation support.
 
 ## Features
