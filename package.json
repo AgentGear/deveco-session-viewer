@@ -16,12 +16,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lookback416/deveco-session-viewer.git"
+    "url": "git+https://github.com/AgentGear/deveco-session-viewer.git"
   },
   "bugs": {
-    "url": "https://github.com/lookback416/deveco-session-viewer/issues"
+    "url": "https://github.com/AgentGear/deveco-session-viewer/issues"
   },
-  "homepage": "https://github.com/lookback416/deveco-session-viewer#readme",
+  "homepage": "https://github.com/AgentGear/deveco-session-viewer#readme",
   "author": "liujianghang",
   "devDependencies": {
     "@types/node": "^22.0.0",
