@@ -635,7 +635,10 @@ function renderSessions(list){
     }else{
       cutoff=Date.now()-sessionTimeRange*864e5;
     }
-    filtered=filtered.filter(s=>(s.time.created||0)>=cutoff);
+    filtered=filtered.filter(s=>{
+      const ts=Math.max(s.time.created||0,s.time.updated||0);
+      return ts>=cutoff;
+    });
   }
   
   const sorted=[...filtered].sort((a,b)=>{
