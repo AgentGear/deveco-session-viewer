@@ -105,8 +105,9 @@ h1{color:var(--accent-blue);margin-bottom:24px;font-size:24px;display:flex;align
 .sticky-toolbar{padding:12px 0;display:flex;align-items:center;gap:10px}
 .detail-title{font-size:18px;color:var(--text-heading);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .detail-meta{display:flex;gap:16px;font-size:12px;color:var(--text-secondary);flex-wrap:wrap;padding:8px 0 12px;border-bottom:1px solid var(--border-secondary);margin-bottom:20px}
-.back-btn{background:linear-gradient(135deg,var(--accent-blue) 0%,var(--accent-blue-dark) 100%);border:none;color:#fff;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;transition:all .2s;box-shadow:var(--shadow-sm)}
-.back-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.back-btn{background:var(--bg-tertiary);border:1px solid var(--border-primary);color:var(--text-secondary);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;transition:all .15s}
+.back-btn:hover{background:var(--bg-hover);color:var(--text-primary)}
+.back-btn:active{transform:scale(0.95)}
 .back-btn:active{transform:translateY(0)}
 .message-list{display:flex;flex-direction:column;gap:12px}
 .message{background:var(--bg-secondary);border:1px solid var(--border-primary);border-radius:6px;padding:14px 16px}
@@ -142,6 +143,7 @@ h1{color:var(--accent-blue);margin-bottom:24px;font-size:24px;display:flex;align
 .toolbar{display:flex;gap:10px;align-items:center}
 .toggle-btn{display:flex;align-items:center;gap:6px;background:var(--bg-tertiary);border:1px solid var(--border-primary);color:var(--text-secondary);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;transition:all .15s;user-select:none}
 .toggle-btn:hover{background:var(--bg-hover);color:var(--text-primary)}
+.toggle-btn:active{transform:scale(0.95)}
 .toggle-btn.active{background:var(--bg-success);border-color:var(--accent-green);color:var(--accent-green)}
 .toggle-btn .dot{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.5}
 .toggle-btn.active .dot{opacity:1}
@@ -159,6 +161,7 @@ h1{color:var(--accent-blue);margin-bottom:24px;font-size:24px;display:flex;align
 .export-wrap{position:relative}
 .export-btn{background:var(--bg-tertiary);border:1px solid var(--border-primary);color:var(--accent-purple);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;transition:all .15s}
 .export-btn:hover{background:var(--bg-hover);color:var(--text-heading)}
+.export-btn:active{transform:scale(0.95)}
 .export-menu{display:none;position:absolute;right:0;top:100%;margin-top:4px;background:var(--bg-secondary);border:1px solid var(--border-primary);border-radius:6px;overflow:hidden;z-index:20;min-width:120px;box-shadow:var(--shadow-dropdown)}
 .export-menu.show{display:block}
 .export-menu button{display:block;width:100%;padding:8px 16px;background:none;border:none;color:var(--text-primary);font-size:13px;text-align:left;cursor:pointer;transition:background .15s}
@@ -216,8 +219,8 @@ mark.find-hl.current{background:var(--accent-blue);color:#fff}
 .modal-btn.danger{background:var(--accent-red);border:none;color:#fff}
 .modal-btn.danger:hover{background:var(--accent-red-dark)}
 .card-action-btn.danger:hover{background:var(--bg-danger);border-color:var(--accent-red);color:var(--accent-red)}
-.refresh-btn{background:var(--bg-tertiary);border:2px solid var(--border-primary);color:var(--text-secondary);width:40px;height:40px;border-radius:10px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
-.refresh-btn:hover{background:var(--bg-hover);border-color:var(--accent-blue);color:var(--accent-blue)}
+.refresh-btn{background:var(--bg-tertiary);border:1px solid var(--border-primary);color:var(--text-secondary);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;transition:all .15s;display:flex;align-items:center;gap:6px}
+.refresh-btn:hover{background:var(--bg-hover);color:var(--text-primary)}
 .refresh-btn:active{transform:scale(0.95)}
 .refresh-btn .refresh-icon{display:inline-block;transition:transform 0.3s ease}
 .refresh-btn.spinning .refresh-icon{animation:spin 0.8s linear infinite}
