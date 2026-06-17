@@ -258,6 +258,10 @@ mark.find-hl.current{background:var(--accent-blue);color:#fff}
 .filter-btn{padding:6px 12px;background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:6px;color:var(--text-secondary);font-size:13px;cursor:pointer;transition:all .15s}
 .filter-btn:hover{background:var(--bg-hover);color:var(--text-primary)}
 .filter-btn.active{background:var(--bg-success);border-color:var(--accent-green);color:var(--accent-green)}
+.time-filter-bar{display:flex;gap:8px;margin-bottom:16px}
+.time-filter-btn{padding:6px 12px;background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:6px;color:var(--text-secondary);font-size:13px;cursor:pointer;transition:all .15s}
+.time-filter-btn:hover{background:var(--bg-hover);color:var(--text-primary)}
+.time-filter-btn.active{background:var(--bg-success);border-color:var(--accent-green);color:var(--accent-green)}
 .time-group-header{font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;padding:12px 0 8px;margin-top:16px;border-bottom:1px solid var(--border-secondary)}
 .time-group-header:first-child{margin-top:0}
 </style>
@@ -301,6 +305,12 @@ mark.find-hl.current{background:var(--accent-blue);color:#fff}
       <div class="filter-bar">
         <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">All</button>
         <button class="filter-btn" data-filter="favorites" onclick="setFilter('favorites')">★ Favorites</button>
+      </div>
+      <div class="time-filter-bar">
+        <button class="time-filter-btn active" data-range="0" onclick="setSessionTimeRange(0)">All Time</button>
+        <button class="time-filter-btn" data-range="1" onclick="setSessionTimeRange(1)">Today</button>
+        <button class="time-filter-btn" data-range="7" onclick="setSessionTimeRange(7)">7 Days</button>
+        <button class="time-filter-btn" data-range="30" onclick="setSessionTimeRange(30)">30 Days</button>
       </div>
       <div class="session-list" id="sessionList"><div class="loading">Loading...</div></div>
     </div>
@@ -385,6 +395,7 @@ let availableModels=[];
 let allSessions=[];
 let allMessages=[];
 let selectedSessionIndex=-1;
+let sessionTimeRange=0;
 
 function initTheme(){
   const saved=localStorage.getItem("deveco-session-viewer-theme");
@@ -440,6 +451,14 @@ function setFilter(filter){
     btn.classList.toggle("active",btn.dataset.filter===filter);
   });
   loadSessions().catch(e=>console.error(e));
+}
+
+function setSessionTimeRange(days){
+  sessionTimeRange=days;
+  document.querySelectorAll(".time-filter-btn").forEach(btn=>{
+    btn.classList.toggle("active",parseInt(btn.dataset.range)===days);
+  });
+  renderSessions(allSessions);
 }
 
 function toggleModelDropdown(e){
@@ -602,6 +621,11 @@ function renderSessions(list){
       const model=(s.model&&s.model.id)?s.model.id:"unknown";
       return currentModelFilter.includes(model);
     });
+  }
+  if(sessionTimeRange>0){
+    const now=Date.now();
+    const cutoff=now-sessionTimeRange*864e5;
+    filtered=filtered.filter(s=>(s.time.created||0)>=cutoff);
   }
   
   const sorted=[...filtered].sort((a,b)=>{
