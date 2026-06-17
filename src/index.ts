@@ -1265,13 +1265,15 @@ function renderStats(){
 }
 
 const server: PluginModule["server"] = async (input, options) => {
-  const port = (options?.port as number) || DEFAULT_PORT
+  const portOption = options?.port
+  const port = typeof portOption === "string" ? parseInt(portOption, 10) : (portOption as number)
+  const finalPort = Number.isFinite(port) && port > 0 ? port : DEFAULT_PORT
   const directory = input.directory
   const client = input.client
   const sseClients = new Set<http.ServerResponse>()
 
   const httpServer = http.createServer(async (req, res) => {
-    const url = new URL(req.url || "/", `http://localhost:${port}`)
+    const url = new URL(req.url || "/", `http://localhost:${finalPort}`)
     const pathname = url.pathname
 
     res.setHeader("Access-Control-Allow-Origin", "*")
@@ -1287,7 +1289,7 @@ const server: PluginModule["server"] = async (input, options) => {
     try {
       if (pathname === "/" || pathname === "/index.html") {
         res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" })
-        res.end(getWebUI(port))
+        res.end(getWebUI(finalPort))
         return
       }
 
@@ -1377,8 +1379,8 @@ const server: PluginModule["server"] = async (input, options) => {
     }
   })
 
-  httpServer.listen(port, () => {
-    console.log(`[session-history] Web UI: http://localhost:${port}`)
+  httpServer.listen(finalPort, () => {
+    console.log(`[session-history] Web UI: http://localhost:${finalPort}`)
   })
 
   httpServer.on("error", (err: NodeJS.ErrnoException) => {
