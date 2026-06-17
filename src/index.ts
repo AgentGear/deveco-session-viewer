@@ -1265,9 +1265,20 @@ function renderStats(){
 }
 
 const server: PluginModule["server"] = async (input, options) => {
-  const portOption = options?.port
-  const port = typeof portOption === "string" ? parseInt(portOption, 10) : (portOption as number)
-  const finalPort = Number.isFinite(port) && port > 0 ? port : DEFAULT_PORT
+  // Safely extract port from options, handling all edge cases
+  let finalPort = DEFAULT_PORT
+  if (options && typeof options === "object" && "port" in options) {
+    const portOption = options.port
+    if (typeof portOption === "string") {
+      const parsed = parseInt(portOption, 10)
+      if (Number.isFinite(parsed) && parsed > 0) {
+        finalPort = parsed
+      }
+    } else if (typeof portOption === "number" && Number.isFinite(portOption) && portOption > 0) {
+      finalPort = portOption
+    }
+  }
+  
   const directory = input.directory
   const client = input.client
   const sseClients = new Set<http.ServerResponse>()
@@ -1311,7 +1322,7 @@ const server: PluginModule["server"] = async (input, options) => {
           directory, 
           projectId: input.project.id,
           serverIP: getLocalIP(),
-          serverPort: port
+          serverPort: finalPort
         }))
         return
       }
