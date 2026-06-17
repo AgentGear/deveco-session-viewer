@@ -722,7 +722,28 @@ function setSort(field){
 
 function renderDetail(session,msgs){
   document.getElementById("detailTitle").textContent=session.title||"Untitled";
-  document.getElementById("detailMeta").innerHTML='<span>Created: '+new Date(session.time.created).toLocaleString()+'</span>'+(session.time.updated?'<span>Updated: '+new Date(session.time.updated).toLocaleString()+'</span>':'')+(session.model&&session.model.id?'<span>Model: '+esc(session.model.id)+'</span>':'')+(session.tokens?'<span>'+fmtTok(session.tokens)+'</span>':'')+(session.cost?'<span>'+fmtCost(session.cost)+'</span>':'');
+  
+  let duration='';
+  if(msgs&&msgs.length>0){
+    const sorted=[...msgs].sort((a,b)=>a.info.time.created-b.info.time.created);
+    const firstUser=sorted.find(m=>m.info.role==='user');
+    const lastAssistant=[...sorted].reverse().find(m=>m.info.role==='assistant');
+    if(firstUser&&lastAssistant){
+      const durationMs=lastAssistant.info.time.created-firstUser.info.time.created;
+      const seconds=Math.floor(durationMs/1000);
+      const minutes=Math.floor(seconds/60);
+      const hours=Math.floor(minutes/60);
+      if(hours>0){
+        duration=hours+'h '+String(minutes%60).padStart(2,'0')+'m';
+      }else if(minutes>0){
+        duration=minutes+'m '+String(seconds%60).padStart(2,'0')+'s';
+      }else{
+        duration=seconds+'s';
+      }
+    }
+  }
+  
+  document.getElementById("detailMeta").innerHTML='<span>Created: '+new Date(session.time.created).toLocaleString()+'</span>'+(session.time.updated?'<span>Updated: '+new Date(session.time.updated).toLocaleString()+'</span>':'')+(duration?'<span>Duration: '+duration+'</span>':'')+(session.model&&session.model.id?'<span>Model: '+esc(session.model.id)+'</span>':'')+(session.tokens?'<span>'+fmtTok(session.tokens)+'</span>':'')+(session.cost?'<span>'+fmtCost(session.cost)+'</span>':'');
   const ml=document.getElementById("messageList");
   if(!msgs||!msgs.length){ml.innerHTML='<div class="empty">No messages</div>';return}
   const sorted=[...msgs].sort((a,b)=>a.info.time.created-b.info.time.created);
