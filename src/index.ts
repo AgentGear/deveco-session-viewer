@@ -1379,25 +1379,17 @@ const server: PluginModule["server"] = async (input, options) => {
     }
   })
 
-  const startServer = (tryPort: number, maxAttempts: number = 10): void => {
-    httpServer.listen(tryPort, () => {
-      console.log(`[session-history] Web UI: http://localhost:${tryPort}`)
-    })
+  httpServer.listen(finalPort, () => {
+    console.log(`[session-history] Web UI: http://localhost:${finalPort}`)
+  })
 
-    httpServer.on("error", (err: NodeJS.ErrnoException) => {
-      if (err.code === "EADDRINUSE" && maxAttempts > 0) {
-        console.log(`[session-history] Port ${tryPort} in use, trying ${tryPort + 1}...`)
-        httpServer.removeAllListeners()
-        startServer(tryPort + 1, maxAttempts - 1)
-      } else if (err.code === "EADDRINUSE") {
-        console.error(`[session-history] Could not find available port after 10 attempts`)
-      } else {
-        console.error(`[session-history] Server error:`, err.message)
-      }
-    })
-  }
-
-  startServer(finalPort)
+  httpServer.on("error", (err: NodeJS.ErrnoException) => {
+    if (err.code === "EADDRINUSE") {
+      console.log(`[session-history] Port ${finalPort} already in use, skipping plugin startup`)
+      return
+    }
+    console.error(`[session-history] Server error:`, err.message)
+  })
 
   function broadcast(data: unknown) {
     const payload = `data: ${JSON.stringify(data)}\n\n`
