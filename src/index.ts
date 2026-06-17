@@ -627,8 +627,14 @@ function renderSessions(list){
     });
   }
   if(sessionTimeRange>0){
-    const now=Date.now();
-    const cutoff=now-sessionTimeRange*864e5;
+    let cutoff;
+    if(sessionTimeRange===1){
+      const today=new Date();
+      today.setHours(0,0,0,0);
+      cutoff=today.getTime();
+    }else{
+      cutoff=Date.now()-sessionTimeRange*864e5;
+    }
     filtered=filtered.filter(s=>(s.time.created||0)>=cutoff);
   }
   
