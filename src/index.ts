@@ -258,7 +258,6 @@ mark.find-hl.current{background:var(--accent-blue);color:#fff}
 .filter-btn{padding:6px 12px;background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:6px;color:var(--text-secondary);font-size:13px;cursor:pointer;transition:all .15s}
 .filter-btn:hover{background:var(--bg-hover);color:var(--text-primary)}
 .filter-btn.active{background:var(--bg-success);border-color:var(--accent-green);color:var(--accent-green)}
-.time-filter-bar{display:flex;gap:8px;margin-bottom:16px}
 .time-filter-btn{padding:6px 12px;background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:6px;color:var(--text-secondary);font-size:13px;cursor:pointer;transition:all .15s}
 .time-filter-btn:hover{background:var(--bg-hover);color:var(--text-primary)}
 .time-filter-btn.active{background:var(--bg-success);border-color:var(--accent-green);color:var(--accent-green)}
@@ -305,9 +304,7 @@ mark.find-hl.current{background:var(--accent-blue);color:#fff}
       <div class="filter-bar">
         <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">All</button>
         <button class="filter-btn" data-filter="favorites" onclick="setFilter('favorites')">★ Favorites</button>
-      </div>
-      <div class="time-filter-bar">
-        <button class="time-filter-btn active" data-range="0" onclick="setSessionTimeRange(0)">All Time</button>
+        <div style="flex:1"></div>
         <button class="time-filter-btn" data-range="1" onclick="setSessionTimeRange(1)">Today</button>
         <button class="time-filter-btn" data-range="7" onclick="setSessionTimeRange(7)">7 Days</button>
         <button class="time-filter-btn" data-range="30" onclick="setSessionTimeRange(30)">30 Days</button>
@@ -454,10 +451,17 @@ function setFilter(filter){
 }
 
 function setSessionTimeRange(days){
-  sessionTimeRange=days;
-  document.querySelectorAll(".time-filter-btn").forEach(btn=>{
-    btn.classList.toggle("active",parseInt(btn.dataset.range)===days);
-  });
+  if(sessionTimeRange===days){
+    sessionTimeRange=0;
+    document.querySelectorAll(".time-filter-btn").forEach(btn=>{
+      btn.classList.remove("active");
+    });
+  }else{
+    sessionTimeRange=days;
+    document.querySelectorAll(".time-filter-btn").forEach(btn=>{
+      btn.classList.toggle("active",parseInt(btn.dataset.range)===days);
+    });
+  }
   renderSessions(allSessions);
 }
 
