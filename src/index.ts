@@ -219,7 +219,8 @@ mark.find-hl.current{background:var(--accent-blue);color:#fff}
 .refresh-btn{background:var(--bg-tertiary);border:2px solid var(--border-primary);color:var(--text-secondary);width:40px;height:40px;border-radius:10px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
 .refresh-btn:hover{background:var(--bg-hover);border-color:var(--accent-blue);color:var(--accent-blue)}
 .refresh-btn:active{transform:scale(0.95)}
-.refresh-btn.spinning{animation:spin 0.8s linear infinite}
+.refresh-btn .refresh-icon{display:inline-block;transition:transform 0.3s ease}
+.refresh-btn.spinning .refresh-icon{animation:spin 0.8s linear infinite}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .search-sort-row{display:flex;gap:12px;margin-bottom:16px;align-items:center}
 .search-wrap{flex:1;position:relative}
@@ -299,7 +300,7 @@ mark.find-hl.current{background:var(--accent-blue);color:#fff}
           </button>
           <div class="model-dropdown" id="modelDropdown"></div>
         </div>
-        <button class="refresh-btn" onclick="refreshSessionList()" title="Refresh sessions">&#8635;</button>
+        <button class="refresh-btn" onclick="refreshSessionList()" title="Refresh sessions"><span class="refresh-icon">&#8635;</span></button>
       </div>
       <div class="filter-bar">
         <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">All</button>
@@ -336,7 +337,7 @@ mark.find-hl.current{background:var(--accent-blue);color:#fff}
       <div class="sticky-toolbar">
         <div class="detail-title" id="detailTitle"></div>
         <div style="flex:1"></div>
-        <button class="refresh-btn" onclick="refreshSessionDetail()" title="Refresh messages" style="width:36px;height:36px;font-size:16px">&#8635;</button>
+        <button class="refresh-btn" onclick="refreshSessionDetail()" title="Refresh messages"><span class="refresh-icon">&#8635;</span></button>
         <div class="export-wrap">
           <button class="export-btn" onclick="toggleExportMenu(event)">Export ▾</button>
           <div class="export-menu" id="exportMenu">
