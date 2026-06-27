@@ -4,6 +4,16 @@ English | [中文](./README.zh-CN.md)
 
 A plugin for deveco/opencode that provides a local web UI to browse, search, and manage conversation sessions with theme switching and keyboard navigation support.
 
+## Screenshots
+
+<p align="center">
+  <img src="./docs/dark_theme.png" alt="Dark Theme - Session List" width="49%" />
+  <img src="./docs/light_theme.png" alt="Light Theme - Session List" width="49%" />
+</p>
+<p align="center">
+  <img src="./docs/statistics.png" alt="Statistics Dashboard" width="70%" />
+</p>
+
 ## Features
 
 ### Session Management

@@ -4,6 +4,16 @@
 
 一个用于 deveco/opencode 的插件，提供本地 Web UI 来浏览、搜索和管理对话会话，支持主题切换和键盘导航。
 
+## 截图
+
+<p align="center">
+  <img src="./docs/dark_theme.png" alt="暗色主题 - 对话列表" width="49%" />
+  <img src="./docs/light_theme.png" alt="亮色主题 - 对话列表" width="49%" />
+</p>
+<p align="center">
+  <img src="./docs/statistics.png" alt="统计仪表板" width="70%" />
+</p>
+
 ## 功能特性
 
 ### 会话管理
