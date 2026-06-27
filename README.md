@@ -11,17 +11,22 @@ A plugin for deveco/opencode that provides a local web UI to browse, search, and
 - **Session Detail View** - View complete conversation history with markdown rendering
 - **Rename Sessions** - Edit session titles directly from the list (syncs with deveco TUI)
 - **Delete Sessions** - Permanently remove sessions with confirmation dialog
+- **Bulk Operations** - Multi-select sessions for batch delete or export (JSON format)
 - **Favorites** - Star sessions to pin them to the top of the list (stored in browser localStorage)
 - **Export** - Export conversations as Markdown or JSON, content respects Clean Mode setting
 - **Copy Messages** - Copy individual message content to clipboard
+- **Message Count & Duration** - Session cards display conversation turn count and duration
 
 ### Search & Filter
-- **Keyword Search** - Filter sessions by keyword in the session list
+- **Title Search** - Filter sessions by title keyword (server-side, fast)
+- **Full-text Search** - Search all session message content with highlighted match snippets (client-side, cached, batch-loaded)
 - **In-conversation Search** - Ctrl+F to search within a conversation with match highlighting and navigation
 - **Sort** - Sort sessions by Time, Cost, or Tokens (ascending/descending)
 - **Model Filter** - Multi-select checkbox filter to show sessions by specific models
 - **Favorites Filter** - Toggle to show only favorited sessions
+- **Time Filter** - Quick filter by Today, 7 Days, or 30 Days
 - **Time Grouping** - Sessions grouped by Today / Yesterday / This Week / This Month / Older when sorted by time
+- **Pagination** - Loads 50 sessions initially, auto-loads more on scroll to prevent rendering lag
 
 ### Statistics Dashboard
 - **Tab-based Navigation** - Switch between Sessions and Statistics views
@@ -29,16 +34,19 @@ A plugin for deveco/opencode that provides a local web UI to browse, search, and
 - **Summary Cards** - Total Cost, Total Tokens, Session Count, Average Cost per Session
 - **Charts** (powered by Chart.js):
   - Daily Cost Trend (line chart)
+  - Daily Token Trend (line chart)
   - Cost by Model (doughnut chart)
   - Daily Sessions (bar chart)
 
 ### UX
+- **Modern Minimalist UI** - Refined color palette, Inter + JetBrains Mono fonts, unified SVG icons, smooth transitions
 - **Real-time Updates** - Automatic refresh via Server-Sent Events (SSE) when sessions or messages change
 - **Clean Mode** - Hide intermediate agent steps, show only user inputs and final assistant responses per turn
 - **Sticky Header** - Session title, search bar, and navigation controls stay visible while scrolling
 - **Server Info** - Status bar shows connected project directory and server IP:port
 - **Theme Switching** - Toggle between dark and light themes (preference saved to localStorage)
 - **Keyboard Navigation** - Navigate sessions with arrow keys, Enter to open, Esc to go back
+- **Shortcuts Panel** - Press `?` to view all keyboard shortcuts
 
 ## Installation
 
@@ -125,10 +133,13 @@ Updates are delivered via Server-Sent Events (SSE) with automatic reconnection o
 
 ### Keyboard Shortcuts
 
+Press `?` anytime to view the shortcuts panel.
+
 **Session List:**
 - `↑` / `↓` - Navigate between sessions
 - `Enter` - Open selected session
 - `Esc` - Clear search (if search box is focused)
+- `?` - Show shortcuts panel
 
 **Session Detail:**
 - `Ctrl+F` / `Cmd+F` - Search within conversation
@@ -137,7 +148,7 @@ Updates are delivered via Server-Sent Events (SSE) with automatic reconnection o
 - `Esc` - Close search / Return to session list
 
 **General:**
-- Click theme toggle button (☀️/🌙) in header to switch between light and dark themes
+- Click theme toggle button in header to switch between light and dark themes
 
 ## Architecture
 
@@ -167,6 +178,10 @@ The plugin starts an HTTP server that:
 | `/api/sessions/:id` | DELETE | Delete a session |
 | `/api/sessions/:id/messages?limit=...` | GET | Get session messages |
 | `/api/events` | GET | SSE stream for real-time updates |
+
+## Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md) for release history.
 
 ## License
 
